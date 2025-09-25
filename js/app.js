@@ -1,52 +1,48 @@
-// Declare global student table (outside the function)
-let studentTable = [];
+// Array to store subjects
+let subjects = [];
 
-// Add Student function
-function addStudent(studentName, studentID, middleName, lastName) {
-    // Push new student into the array
-    studentTable.push({
-        id: studentID,
-        first: studentName,
-        middle: middleName,
-        last: lastName
-    });
+// Handle Add Subject button click
+document.getElementById("addSubject").addEventListener("click", function () {
+    let subjectCode = document.getElementById("subjectCode").value.trim();
+    let subjectName = document.getElementById("subjectName").value.trim();
+    let units = document.getElementById("units").value.trim();
 
-    // Update the HTML table
-    renderStudentTable();
-}
+    // Basic validation
+    if (subjectCode === "" || subjectName === "" || units === "") {
+        alert("Please fill in all fields (Code, Name, Units).");
+        return;
+    }
 
-// Render the student table in HTML
-function renderStudentTable() {
+    // Create subject object
+    let subject = {
+        code: subjectCode,
+        name: subjectName,
+        units: units
+    };
+
+    // Add to array
+    subjects.push(subject);
+
+    // Update the table
+    renderSubjectTable();
+
+    // Clear form
+    document.getElementById("subjectForm").reset();
+});
+
+// Function to render subjects in the table
+function renderSubjectTable() {
     let tableContent = document.getElementById("table-content");
-    tableContent.innerHTML = ""; // clear existing rows
+    tableContent.innerHTML = ""; // clear old rows
 
-    studentTable.forEach(student => {
+    subjects.forEach(subject => {
         let row = `
             <tr>
-                <td>${student.id}</td>
-                <td>${student.first}</td>
-                <td>${student.middle}</td>
-                <td>${student.last}</td>
+                <td>${subject.code}</td>
+                <td>${subject.name}</td>
+                <td>${subject.units}</td>
             </tr>
         `;
         tableContent.innerHTML += row;
     });
 }
-
-// Event Listener for button
-document.getElementById("addStudentButton").addEventListener("click", function () {
-    let idNumber = document.getElementById("idNumber").value.trim();
-    let firstName = document.getElementById("firstName").value.trim();
-    let middleName = document.getElementById("middleName").value.trim();
-    let lastName = document.getElementById("lastName").value.trim();
-
-    if (idNumber === "" || firstName === "" || lastName === "") {
-        alert("Please fill in ID Number, Firstname, and Lastname.");
-        return;
-    }
-
-    addStudent(firstName, idNumber, middleName, lastName);
-
-    // Clear form
-    document.getElementById("studentForm").reset();
-});
